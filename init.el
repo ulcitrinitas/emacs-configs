@@ -125,7 +125,7 @@
   (elpaca-use-package-mode))
 
 ;; general.el
-;;(use-package general :ensure (:wait t) :demand t)
+;; (use-package general :ensure (:wait t) :demand t)
 
 ;; evil mode
 ;; Expands to: (elpaca evil (use-package evil :demand t))
