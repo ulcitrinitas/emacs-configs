@@ -1,0 +1,9 @@
+#+title: Readme da configuração do emacs
+#+author: Ulisses SC Silva
+#+date: <2026-11-14>
+
+* Minha configuração do emacs
+
+Algumas configurações do emacs para poder usar com o org mode e com programação
+
+
