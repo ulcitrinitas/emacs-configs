@@ -64,3 +64,4 @@ elpaca/
 .last-package-update-day
 history
 
+.cache/
