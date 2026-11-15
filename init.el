@@ -141,8 +141,9 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    '(all-the-icons auto-package-update dap-mode doom-modeline doom-themes
-		   embark embark-consult lsp-mode lsp-ui magit
-		   marginalia orderless python-mode pyvenv vertico)))
+		   embark embark-consult evil-nerd-commenter lsp-mode
+		   lsp-ui magit marginalia orderless python-mode
+		   pyvenv vertico)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -546,6 +547,9 @@
   (pyvenv-mode 1))
 
 
+;; evil-comments
+(use-package evil-nerd-commenter
+  :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 
 
 
