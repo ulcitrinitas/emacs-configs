@@ -140,10 +140,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(all-the-icons auto-package-update dap-mode doom-modeline doom-themes
-		   embark embark-consult evil-nerd-commenter lsp-mode
-		   lsp-ui magit marginalia orderless python-mode
-		   pyvenv vertico)))
+   '(all-the-icons auto-package-update company company-box dap-mode
+		   doom-modeline doom-themes embark embark-consult
+		   evil-nerd-commenter lsp-mode lsp-ui magit
+		   marginalia orderless python-mode pyvenv
+		   rainbow-delimiters vertico)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -552,11 +553,26 @@
   :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 
 
+;; company
+
+(use-package company
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
+  :bind (:map company-active-map
+         ("<tab>" . company-complete-selection))
+        (:map lsp-mode-map
+         ("<tab>" . company-indent-or-complete-common))
+  :custom
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.0))
+
+(use-package company-box
+  :hook (company-mode . company-box-mode))
 
 
-
-
-
+;; rainbow delimeters
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 
 
