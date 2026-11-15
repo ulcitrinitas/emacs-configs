@@ -65,3 +65,6 @@ elpaca/
 history
 
 .cache/
+.lsp-session-*
+.lsp-session-v1
+
