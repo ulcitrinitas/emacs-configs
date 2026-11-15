@@ -60,3 +60,7 @@ auto-save-list/
 
 eln-cache/
 elpaca/
+.extension/
+.last-package-update-day
+history
+
