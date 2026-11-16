@@ -6,13 +6,17 @@
 
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
+#+begin_src emacs-lisp
+  ;; -*- lexical-binding: t; -*-
+  ;;; init.el --- Gerado a partir de config.org -*- lexical-binding: t; -*-
+  ;; NÃO edite este arquivo diretamente: edite config.org e rode org-babel-tangle.
+#+end_src
+
+
 * Inicializa os gerenciador de pacotes
 
 #+BEGIN_SRC emacs-lisp
-  ;; -*- lexical-binding: t; -*-
-
-  ;; arquivo gerado pelo Emacs.org
-
+  
     (require 'package)
 
     (setq package-archives '(("melpa" . "https://melpa.org/packages/")
