@@ -95,7 +95,8 @@
 (dolist (mode '(term-mode-hook
                 shell-mode-hook
                 treemacs-mode-hook
-                eshell-mode-hook))
+                eshell-mode-hook
+		vterm-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 
@@ -144,7 +145,7 @@
 		   doom-modeline doom-themes embark embark-consult
 		   evil-nerd-commenter lsp-mode lsp-ui magit
 		   marginalia orderless python-mode pyvenv
-		   rainbow-delimiters vertico)))
+		   rainbow-delimiters vertico vterm)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -510,23 +511,23 @@
 ;; (use-package lsp-ivy :after lsp)
 
 
-(use-package dap-mode
-  ;; Uncomment the config below if you want all UI panes to be hidden by default!
-  ;; :custom
-  ;; (lsp-enable-dap-auto-configure nil)
-  ;; :config
-  ;; (dap-ui-mode 1)
-  :commands dap-debug
-  :config
-  ;; Set up Node debugging
-  (require 'dap-node)
-  (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+;; (use-package dap-mode
+;;   ;; Uncomment the config below if you want all UI panes to be hidden by default!
+;;   ;; :custom
+;;   ;; (lsp-enable-dap-auto-configure nil)
+;;   ;; :config
+;;   ;; (dap-ui-mode 1)
+;;   :commands dap-debug
+;;   :config
+;;   ;; Set up Node debugging
+;;   (require 'dap-node)
+;;   (dap-node-setup) ;; Automatically installs Node debug adapter if needed
 
-  ;; Bind `C-c l d` to `dap-hydra` for easy access
-  (general-define-key
-    :keymaps 'lsp-mode-map
-    :prefix lsp-keymap-prefix
-    "d" '(dap-hydra t :wk "debugger")))
+;;   ;; Bind `C-c l d` to `dap-hydra` for easy access
+;;   (general-define-key
+;;     :keymaps 'lsp-mode-map
+;;     :prefix lsp-keymap-prefix
+;;     "d" '(dap-hydra t :wk "debugger")))
 
 ;; python mode
 
@@ -556,23 +557,67 @@
 ;; company
 
 (use-package company
-  :after lsp-mode
-  :hook (lsp-mode . company-mode)
-  :bind (:map company-active-map
-         ("<tab>" . company-complete-selection))
-        (:map lsp-mode-map
-         ("<tab>" . company-indent-or-complete-common))
+  :ensure t
+  :hook (after-init . global-company-mode)
   :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
+  (company-idle-delay 0.1)             ; Tempo em segundos para abrir o menu
+  (company-minimum-prefix-length 1)    ; Número mínimo de letras para sugerir
+  (company-selection-wrap-around t)    ; Volta ao início ao chegar no fim da lista
+  (company-tooltip-align-annotations t)) ; Alinha anotações à direita no menu
 
-(use-package company-box
-  :hook (company-mode . company-box-mode))
+
+
+
+;; (use-package company
+;;   :after lsp-mode
+;;   :hook (lsp-mode . company-mode)
+;;   :bind (:map company-active-map
+;;          ("<tab>" . company-complete-selection))
+;;         (:map lsp-mode-map
+;;          ("<tab>" . company-indent-or-complete-common))
+;;   :custom
+;;   (company-minimum-prefix-length 1)
+;;   (company-idle-delay 0.0))
+
+;; (use-package company-box
+;;   :hook (company-mode . company-box-mode))
 
 
 ;; rainbow delimeters
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
+
+;; vterm
+(use-package vterm
+  :commands vterm
+  :config
+    (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")  ;; Set this to match your custom shell prompt
+  ;;(setq vterm-shell "zsh")                       ;; Set this to customize the shell to launch
+  (setq vterm-max-scrollback 10000)
+ )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
