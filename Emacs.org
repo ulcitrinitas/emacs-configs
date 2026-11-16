@@ -9,6 +9,7 @@
 * Inicializa os gerenciador de pacotes
 
 #+BEGIN_SRC emacs-lisp
+;; -*- lexical-binding: t; -*-
   (require 'package)
 
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
