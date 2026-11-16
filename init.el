@@ -142,10 +142,10 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    '(all-the-icons auto-package-update company company-box dap-mode
-		   doom-modeline doom-themes embark embark-consult
-		   evil-nerd-commenter lsp-mode lsp-ui magit
-		   marginalia orderless python-mode pyvenv
-		   rainbow-delimiters vertico vterm)))
+		   doom-modeline doom-themes elixir-mode embark
+		   embark-consult evil-nerd-commenter lsp-mode lsp-ui
+		   magit marginalia orderless python-mode pyvenv
+		   rainbow-delimiters rust-mode vertico vterm)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -485,31 +485,6 @@
 
 (treemacs-start-on-boot)
 
-;; lsp
-
-(defun efs/lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
-
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :hook (lsp-mode . efs/lsp-mode-setup)
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  :config
-  (lsp-enable-which-key-integration t))
-
-
-
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'bottom))
-
-
-;; (use-package lsp-treemacs :after lsp)
-;; (use-package lsp-ivy :after lsp)
-
 
 ;; (use-package dap-mode
 ;;   ;; Uncomment the config below if you want all UI panes to be hidden by default!
@@ -529,25 +504,6 @@
 ;;     :prefix lsp-keymap-prefix
 ;;     "d" '(dap-hydra t :wk "debugger")))
 
-;; python mode
-
-(use-package python-mode
-  :ensure t
-  :hook (python-mode . lsp-deferred)
-  :custom
-  ;; NOTE: Set these if Python 3 is called "python3" on your system!
-  ;; (python-shell-interpreter "python3")
-  ;; (dap-python-executable "python3")
-  (dap-python-debugger 'debugpy)
-  :config
-  (require 'dap-python))
-
-
-(use-package pyvenv
-  :after python-mode
-  :config
-  (pyvenv-mode 1))
-
 
 ;; evil-comments
 (use-package evil-nerd-commenter
@@ -565,6 +521,11 @@
   (company-selection-wrap-around t)    ; Volta ao início ao chegar no fim da lista
   (company-tooltip-align-annotations t)) ; Alinha anotações à direita no menu
 
+(use-package company-box
+  :ensure t
+  :after company
+  :hook (company-mode . company-box-mode)
+  )
 
 
 
@@ -597,6 +558,59 @@
     :bind
     ("C-'" . vterm)
  )
+
+;; linguagens de programação
+
+(use-package rust-mode
+  :ensure t)
+
+(use-package elixir-mode
+  :ensure t)
+
+
+;; lsp
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :ensure t
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :custom
+  ;; (lsp-enable-which-key-integration t)
+  (lsp-completion-provider :capf) ;; garante que o lsp-mode use o company-capf como provedor
+  :hook
+  (
+   ;; python no modo clássico e tree-sitter
+   (python-mode . lsp-deferred)
+   (python-ts-mode . lsp-deferred)
+
+   ;; rust
+   (rust-mode . lsp-deferred)
+   (rust-ts-mode . lsp-deferred)
+
+   ;; c/c++
+   (c-mode . lsp-deferred)
+   (c-ts-mode . lsp-deferred)
+   (c++-mode . lsp-deferred)
+   (c++-ts-mode . lsp-deferred)
+
+   ;; elixir
+   (elixir-mode . lsp-deferred)
+   (elixir-ts-mode . lsp-deferred)
+
+   ;; ativa atalhos e dicas com o lsp
+   (lsp-mode . lsp-enable-which-key-integration)
+   ))
+
+
+
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
+
+
+;; (use-package lsp-treemacs :after lsp)
+;; (use-package lsp-ivy :after lsp)
 
 
 
