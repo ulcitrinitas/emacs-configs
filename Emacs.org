@@ -133,14 +133,23 @@
 #+END_SRC
 
 ** Altera onde os backups são armazenados
+#+BEGIN_SRC
+  ;; emacs-lisp
+
+  ;; Mantém o diretório de configuração limpo
+  (setq backup-directory-alist `(("." . ,(expand-file-name "backups/" user-emacs-directory)))
+        auto-save-file-name-transforms `((".*" ,(expand-file-name "auto-saves/" user-emacs-directory) t))
+        custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (when (file-exists-p custom-file) (load custom-file))
+
+#+END_SRC
+
+
 #+BEGIN_SRC emacs-lisp
-
-;; Mantém o diretório de configuração limpo
-(setq backup-directory-alist `(("." . ,(expand-file-name "backups/" user-emacs-directory)))
-      auto-save-file-name-transforms `((".*" ,(expand-file-name "auto-saves/" user-emacs-directory) t))
-      custom-file (expand-file-name "custom.el" user-emacs-directory))
-(when (file-exists-p custom-file) (load custom-file))
-
+  
+  ;; organizando os backups
+  (setq backup-directory-alist `(("." . "~/.local/state/esaves")))
+    
 #+END_SRC
 
 
@@ -681,7 +690,9 @@ Define a função para criar um novo buffer na inicialização
 
 
 *** lsp
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC
+
+  emacs-lisp
 
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
@@ -729,6 +740,57 @@ Define a função para criar um novo buffer na inicialização
 #+END_SRC
 
 
+*** flycheck
 
+#+BEGIN_SRC emacs-lisp
+
+  (use-package flycheck
+    :hook (prog-mode . flycheck-mode))
+
+#+END_SRC
+
+*** eglot
+Cliente nativo do emacs para lsp
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package eglot
+    :ensure nil
+    :hook (
+  	 (python-mode . eglot-ensure)
+  	 (js-mode . eglot-ensure)
+  	 (rust-mode . eglot-ensure)
+  	 (elixir-mode . eglot-ensure)))
+
+#+END_SRC
+
+
+* org mode
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package org
+    :ensure nil
+    :config
+    (setq org-startup-indented t
+          org-hide-emphasis-markers t
+          org-src-fontify-natively t
+          org-src-tab-acts-natively t
+          org-edit-src-content-indentation 0)
+    (require 'org-tempo)  ; <el + TAB insere bloco emacs-lisp
+    (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp")))
+
+  (use-package org-bullets
+    :hook (org-mode . org-bullets-mode))
+
+#+END_SRC
+
+
+
+
+* tangle automático
+
+# Local Variables:
+# eval (add-hook 'after-salve-hook (lambda () (org-babel-tangle)) nil t)
 
 
