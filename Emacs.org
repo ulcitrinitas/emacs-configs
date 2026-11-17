@@ -807,8 +807,15 @@ Cliente nativo do emacs para lsp
 
 #+END_SRC
 
+** tabela de conteúdos
 
+#+begin_src emacs-lisp
+(use-package
+  :ensure t
+  :hook (org-mode . toc-org-mode)
+  )
 
+#+end_src
 
 * tangle automático
 
