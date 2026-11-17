@@ -6,6 +6,47 @@
 
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
+* Sumário :TOC:
+- [[#lexical-binding][lexical binding]]
+- [[#inicializa-os-gerenciador-de-pacotes][Inicializa os gerenciador de pacotes]]
+  - [[#ativa-o-use-package][Ativa o use-package]]
+- [[#inicialização][Inicialização]]
+  - [[#perfomace-no-inicio][Perfomace no inicio]]
+- [[#interface][Interface]]
+  - [[#esconde-itens-da-interface][Esconde itens da interface]]
+  - [[#desabilita-a-mensagem-no-startup][Desabilita a mensagem no startup]]
+  - [[#configurações-da-fonte][Configurações da fonte]]
+  - [[#configurações-da-visuais][Configurações da visuais]]
+  - [[#rolagem-suave][Rolagem suave]]
+  - [[#altera-onde-os-backups-são-armazenados][Altera onde os backups são armazenados]]
+- [[#modos-embutidos][Modos embutidos]]
+  - [[#which-key][which key]]
+- [[#função-customizada][Função customizada]]
+- [[#desablita-as-linhas-de-números][Desablita as linhas de números]]
+- [[#pacotes-para-customização][Pacotes para customização]]
+  - [[#atualizações-automáticas-dos-pacotes][Atualizações automáticas dos pacotes]]
+  - [[#tema-de-cores][tema de cores]]
+  - [[#mode-line][mode line]]
+  - [[#verico][Verico]]
+  - [[#orderless][orderless]]
+  - [[#marginalia][marginalia]]
+  - [[#embark][embark]]
+  - [[#consult][consult]]
+  - [[#magit][magit]]
+  - [[#forge][forge]]
+  - [[#treemacs][treemacs]]
+  - [[#dap-mode][dap mode]]
+  - [[#evil-comments][evil comments]]
+  - [[#company][company]]
+  - [[#rainbow-delimeters][rainbow delimeters]]
+  - [[#vterm][vterm]]
+  - [[#linguagens-de-programação][linguagens de programação]]
+- [[#org-mode][org mode]]
+  - [[#tabela-de-conteúdos][tabela de conteúdos]]
+- [[#tangle-automático][tangle automático]]
+
+* lexical binding
+
 #+begin_src emacs-lisp
   ;; -*- lexical-binding: t; -*-
   ;;; init.el --- Gerado a partir de config.org -*- lexical-binding: t; -*-
