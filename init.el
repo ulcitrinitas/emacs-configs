@@ -511,7 +511,7 @@
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode))
 
-(use-package
+(use-package toc-org
   :ensure t
   :hook (org-mode . toc-org-mode)
   )

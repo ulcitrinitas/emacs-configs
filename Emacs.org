@@ -810,7 +810,7 @@ Cliente nativo do emacs para lsp
 ** tabela de conteúdos
 
 #+begin_src emacs-lisp
-(use-package
+(use-package toc-org
   :ensure t
   :hook (org-mode . toc-org-mode)
   )
