@@ -1,4 +1,7 @@
 ;; -*- lexical-binding: t; -*-
+;;; init.el --- Gerado a partir de config.org -*- lexical-binding: t; -*-
+;; NÃO edite este arquivo diretamente: edite config.org e rode org-babel-tangle.
+
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -74,11 +77,23 @@
       scroll-step 1 ;; rola uma linha com o teclado
       )
 
-;; Mantém o diretório de configuração limpo
-(setq backup-directory-alist `(("." . ,(expand-file-name "backups/" user-emacs-directory)))
-      auto-save-file-name-transforms `((".*" ,(expand-file-name "auto-saves/" user-emacs-directory) t))
-      custom-file (expand-file-name "custom.el" user-emacs-directory))
-(when (file-exists-p custom-file) (load custom-file))
+(use-package emacs
+  :ensure nil
+  :init
+  ;; Cria os diretórios se não existirem
+  (let ((backup-dir (expand-file-name "emacs/backups/" "~/.cache"))
+        (auto-save-dir (expand-file-name "emacs/auto-save/" "~/.cache")))
+    (make-directory backup-dir t)
+    (make-directory auto-save-dir t)
+    (setq backup-directory-alist `(("." . ,backup-dir))
+          auto-save-file-name-transforms `((".*" ,auto-save-dir t))))
+  :custom
+  (create-lockfiles nil)       ; desativa os .#arquivo
+  (backup-by-copying t)        ; copia em vez de renomear
+  (version-control t)          ; backups numerados
+  (kept-new-versions 5)
+  (kept-old-versions 2)
+  (delete-old-versions t))
 
 (which-key-mode t)
 (which-key-setup-side-window-right)
@@ -471,45 +486,27 @@
 (use-package elixir-mode
   :ensure t)
 
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :ensure t
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  :custom
-  ;; (lsp-enable-which-key-integration t)
-  (lsp-completion-provider :capf) ;; garante que o lsp-mode use o company-capf como provedor
-  :hook
-  (
-   ;; python no modo clássico e tree-sitter
-   (python-mode . lsp-deferred)
-   (python-ts-mode . lsp-deferred)
+(use-package flycheck
+  :hook (prog-mode . flycheck-mode))
 
-   ;; rust
-   (rust-mode . lsp-deferred)
-   (rust-ts-mode . lsp-deferred)
+(use-package eglot
+  :ensure nil
+  :hook (
+	 (python-mode . eglot-ensure)
+	 (js-mode . eglot-ensure)
+	 (rust-mode . eglot-ensure)
+	 (elixir-mode . eglot-ensure)))
 
-   ;; c/c++
-   (c-mode . lsp-deferred)
-   (c-ts-mode . lsp-deferred)
-   (c++-mode . lsp-deferred)
-   (c++-ts-mode . lsp-deferred)
+(use-package org
+  :ensure nil
+  :config
+  (setq org-startup-indented t
+        org-hide-emphasis-markers t
+        org-src-fontify-natively t
+        org-src-tab-acts-natively t
+        org-edit-src-content-indentation 0)
+  (require 'org-tempo)  ; <el + TAB insere bloco emacs-lisp
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp")))
 
-   ;; elixir
-   (elixir-mode . lsp-deferred)
-   (elixir-ts-mode . lsp-deferred)
-
-   ;; ativa atalhos e dicas com o lsp
-   (lsp-mode . lsp-enable-which-key-integration)
-   ))
-
-
-
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'bottom))
-
-
-;; (use-package lsp-treemacs :after lsp)
-;; (use-package lsp-ivy :after lsp)
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode))

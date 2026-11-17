@@ -134,24 +134,46 @@
 
 ** Altera onde os backups são armazenados
 #+BEGIN_SRC
-  ;; emacs-lisp
+  emacs-lisp
 
-  ;; Mantém o diretório de configuração limpo
-  (setq backup-directory-alist `(("." . ,(expand-file-name "backups/" user-emacs-directory)))
-        auto-save-file-name-transforms `((".*" ,(expand-file-name "auto-saves/" user-emacs-directory) t))
-        custom-file (expand-file-name "custom.el" user-emacs-directory))
-  (when (file-exists-p custom-file) (load custom-file))
+  (setq backup-directory-alist
+        `(("." . ,(expand-file-name "emacs/backups/" "~/.cache"))))
+
+  (setq auto-save-file-name-transforms
+      `((".*" ,(expand-file-name "emacs/auto-save/" "~/.cache") t)))
+  (make-directory (expand-file-name "emacs/auto-save/" "~/.cache") t)
+
+  ;; Os lockfiles (.#arquivo) não podem ser redirecionados para outro diretório, mas podem ser desativados:
+  (setq create-lockfiles nil)
+
+  ;; backups com versões numeradas
+  (setq version-control t     ; backups numerados (arquivo.~1~, arquivo.~2~...)
+      kept-new-versions 5   ; mantém as 5 versões mais recentes
+      kept-old-versions 2   ; mantém as 2 mais antigas
+      delete-old-versions t ; apaga o excedente sem perguntar
+      backup-by-copying t)  ; copia em vez de renomear (preserva links e permissões)
 
 #+END_SRC
-
 
 #+BEGIN_SRC emacs-lisp
-  
-  ;; organizando os backups
-  (setq backup-directory-alist `(("." . "~/.local/state/esaves")))
-    
+  (use-package emacs
+    :ensure nil
+    :init
+    ;; Cria os diretórios se não existirem
+    (let ((backup-dir (expand-file-name "emacs/backups/" "~/.cache"))
+          (auto-save-dir (expand-file-name "emacs/auto-save/" "~/.cache")))
+      (make-directory backup-dir t)
+      (make-directory auto-save-dir t)
+      (setq backup-directory-alist `(("." . ,backup-dir))
+            auto-save-file-name-transforms `((".*" ,auto-save-dir t))))
+    :custom
+    (create-lockfiles nil)       ; desativa os .#arquivo
+    (backup-by-copying t)        ; copia em vez de renomear
+    (version-control t)          ; backups numerados
+    (kept-new-versions 5)
+    (kept-old-versions 2)
+    (delete-old-versions t))
 #+END_SRC
-
 
 * Modos embutidos
 
